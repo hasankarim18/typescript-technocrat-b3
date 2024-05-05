@@ -9,4 +9,5 @@
 - [1-6 Function in typescript]()
 - [1-7 Spread and Rest Operator]()
 - [1-8 Destructuring in typescript]()
-- [1-7 Destructuring in typescript]()
+- [1-9 Type alias]()
+- [1-9 Union And Interface Type]()

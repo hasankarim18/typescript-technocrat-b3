@@ -4,6 +4,8 @@
 
 #### [1.9 Type Alias](#type-alias)
 
+#### [1.10 Union and Intersection Type](#union-and-intersection-type)
+
 ---
 
 ### 1.7
@@ -109,6 +111,8 @@
 
 ---
 
+### 1.9
+
 ### Type Alias
 
 - Type alias is a name for the type
@@ -177,3 +181,104 @@ const add : Add = (num1 + num2) => num1+num2
 
 - both `function one and two ` are same function
 - `function two` uses type alias
+
+---
+
+### 1.10
+
+### Union and Intersection Type
+
+#### <u> Union Type </u>: TypeScript type system allows you to build new types out of existing types using variety of operators .
+
+- `Union` is one operator : In typescript, a union type formed by combining two or more other types, allowing to hold values of any of those tpes.
+
+- In a sense union types represents a value that could be one type or another
+
+```
+let myVariable:string | number ;
+```
+
+- this means `myVariable` can be a string or a number but not other data types.
+
+```
+{
+  /** Union type */
+  // we are using string literal type
+  type FrontEndDeveloper = "fakibaDeveloper" | "juniorDeveloper";
+
+  const newDeveloper: FrontEndDeveloper = "juniorDeveloper";
+
+  type TUser = {
+    name: string;
+    email: string;
+    genger: "male" | "female";
+    isAdmin: true | false;
+  };
+
+  const user1: TUser = {
+    name: "Hasan",
+    email: "hasan@mail.com",
+    genger: "male",
+    isAdmin: true,
+  };
+
+  /** Intersection type */
+}
+
+// combining two types
+{
+  type TFrontEndDeveloper = "fakibaDeveloper" | "juniorDeveloper";
+  type TFullStackDeveloper = "frontEndDeveloper" | "expertDeveloper";
+
+  /** এতটা টইপ এর সাথে আর একটা টাইপ  Union করতে পারি  */
+  type Developer = TFrontEndDeveloper | TFullStackDeveloper;
+
+  /** TFrontEndDeveloper এর জন্য ২ টা উদাহরণ    */
+  let frontEndDev1: TFrontEndDeveloper = "fakibaDeveloper";
+  let frontEndDev2: TFrontEndDeveloper = "juniorDeveloper";
+
+  /** TFullStackDeveloper এর জন্য ২ টা উদাহরণ    */
+  let fullStackDev1: TFullStackDeveloper = "frontEndDeveloper";
+  let fullStackDev2: TFullStackDeveloper = "expertDeveloper";
+
+  /**
+   * কিন্তু Developer type তৈরি করা হয়েছে TFrontEndDeveloper |TFullStackDeveloper
+   * তাই Developer টাইপ দিয়ে ৪ টি আলাদা আলাদা ভেরিয়েবল তৈরি করা যাবে ।
+   */
+  let dev1: Developer = "fakibaDeveloper";
+  let dev2: Developer = "juniorDeveloper";
+  let dev3: Developer = "frontEndDeveloper";
+  let dev4: Developer = "expertDeveloper";
+}
+
+```
+
+### InterSection Type
+
+- InterSection হল দুইটা টাইপকে একসাথে যুক্ত করা
+
+```// intersection
+
+  type TFrontEndDeveloper = {
+    skills: string[];
+    designation1: "FrontEndDeveloper";
+  };
+
+  type TBackEndDeveloper = {
+    skills: string[];
+    designation2: "BackEndDeveloper";
+  };
+
+  type TFullStackDeveloper = TFrontEndDeveloper & TBackEndDeveloper;
+
+  const fullStackDeveloper: TFullStackDeveloper = {
+    skills: ["HTML", "CSS", "EXPRESS"],
+    designation1: "FrontEndDeveloper",
+    designation2: "BackEndDeveloper",
+  };
+
+```
+
+- উপরের উদাহরনে আমরা ওদখতে পাচ্ছি TFrontEndDeveloper ও TBackEndDeveloper দুইটা আলাদা টাইপ যাদেরকে & চিহ্ন এর মাধ্যমে intersection টাইপ TFullStackDeveloper টাইপ বানানো হয়েছে ।
+- TFullStackDeveloper টাইপ ব্যাবহার করে বানানো ভেরিয়েবল fullStackDeveloper দেখলে বোঝা যায় TFrontEndDeveloper ও TBackEndDeveloper টাইপের কমন skills: string[]; টুকু একটা টাইপে পরিণত হয়েছে এবং designation1: "FrontEndDeveloper",
+  designation2: "BackEndDeveloper", লিটারেল টাইপ দুইটা যোগ হয়েছে ।
