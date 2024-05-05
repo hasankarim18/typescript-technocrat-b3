@@ -14,7 +14,7 @@
 
   const {
     email,
-    name: { middleName: midName },
+    name: { middleName: midName }, // name alias
   } = user;
 
   /**

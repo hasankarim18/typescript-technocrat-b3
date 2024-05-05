@@ -11,7 +11,8 @@
         email: "hasan@mail.com",
         address: "Uganda",
     };
-    const { email, name: { middleName: midName }, } = user;
+    const { email, name: { middleName: midName }, // name alias
+     } = user;
     /**
          you cannot declare type in destructuring
          when you declare a name in destructuring it will    work as `name alias`
@@ -32,4 +33,5 @@
     const [a, b, bestFriend] = myFriends;
     const [, , , ememy, ...rest] = myFriends;
     console.log(rest);
+    console.log("rest");
 }
