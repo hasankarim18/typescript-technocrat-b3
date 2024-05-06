@@ -6,6 +6,8 @@
 
 #### [1.10 Union and Intersection Type](#union-and-intersection-type)
 
+#### [1-11 Ternary, optional chaining & nullish coalescing operator](#ternary-optional-chaining-nullish-coalescing-operator)
+
 ---
 
 ### 1.7
@@ -282,3 +284,115 @@ let myVariable:string | number ;
 - উপরের উদাহরনে আমরা ওদখতে পাচ্ছি TFrontEndDeveloper ও TBackEndDeveloper দুইটা আলাদা টাইপ যাদেরকে & চিহ্ন এর মাধ্যমে intersection টাইপ TFullStackDeveloper টাইপ বানানো হয়েছে ।
 - TFullStackDeveloper টাইপ ব্যাবহার করে বানানো ভেরিয়েবল fullStackDeveloper দেখলে বোঝা যায় TFrontEndDeveloper ও TBackEndDeveloper টাইপের কমন skills: string[]; টুকু একটা টাইপে পরিণত হয়েছে এবং designation1: "FrontEndDeveloper",
   designation2: "BackEndDeveloper", লিটারেল টাইপ দুইটা যোগ হয়েছে ।
+
+---
+
+### 1-11
+
+### Ternary optional chaining nullish coalescing operator
+
+- `Ternary`
+- `Optional Chaining`
+- `Nullish Coalescing`
+  Operators
+
+  // ternary operator || optinal chaiining || nullish coalescing
+
+```
+  const age: number = 15;
+
+  if (age >= 18) {
+  console.log("adult");
+  } else {
+  console.log("Not adult");
+  }
+
+  // ternary operator
+  const isAdult = age >= 18 ? "adult" : "not adult";
+
+  // console.log({ isAdult }); // 'not adult'
+```
+
+#### <u> Nullish qualescing operator</u>
+
+// যদি null বা undefined এর উপর ভিত্তি করে ডিসিসন নিতে হয় এবং ভ্যালু যদি null বা undefined হয় তাহলে default value সেট করা হবে তাহলে তাকে nullish qualescing operator বলে / সেখেত্রে nullish qualescing operator ব্যাবহার করা হয় ।
+
+```
+const isAuthenticated = null;
+
+const result1 = isAuthenticated ?? "Guest";
+const result2 = isAuthenticated ? isAuthenticated : "Guest";
+
+console.log({ result1 }); // "Guest"
+console.log({ result2 }); // "Guest"
+```
+
+//
+`নোট : টারনারি অপারেটর ও নালিশ অপারেটরের মধ্যে পার্থক্য হল টার্নারি অপারেটর সকল falsy value যেমন empty string, null, undefined এর জন্য কাজ করবে কিন্তু - nullish qualescing operator শুধুমাত্র null, undefined, হলেই কাজ করবে অন্য falsy value যেমন empty string কে সে falsy কনসিডার করবেনা ।` - নিচের উদাহরন দেয়া হল :
+
+```
+const firstName = "";
+
+const result3 = firstName ?? "Guest";
+const result4 = firstName ? firstName : "Guest";
+
+console.log({ result3 }); // "" // এখানে empty string কে falsy value কনসিডার করে নাই ।
+console.log({ result4 }); // "Guest"
+
+```
+
+/_ Optional chaining _/
+
+```
+type TUser = {
+name: string;
+address: {
+city: string;
+road: string;
+presentAddress: string;
+permanentAddress?: string;
+};
+};
+
+const user: TUser = {
+name: "Hasan",
+address: {
+city: "Dhaka",
+road: "New Eskaton",
+presentAddress: "Eastern Valey",
+},
+};
+
+const permanentAddress =
+user?.address?.permanentAddress ?? "No permenant Address";
+console.log({ permanentAddress });
+```
+
+উপরের user: TUser ভেরিয়েবল থেকে আমরা যদি permanentAddress পেতে
+তাহলে আমাদের লিখতে হবে: <br>
+
+```
+const permanentAddress = user.address.permanentAddress
+console.log(permanentAddress) // undefined
+```
+
+যেহেতু permanentAddress অপশনাল টাইপ ছিল এবং আমরা এটা ডিফাইন করি নাই
+এর ভ্যালু undefined আসবে এবং এতে কোড ক্রাস করতে পারে
+
+এটা ঠেকানোর জন্য অপশনাল চেইনিং ব্যবহার করা হয়েছে
+
+```
+const permanentAddress =
+user?.address?.permanentAddress
+console.log(permanentAddress) // undefined
+```
+
+- এতেও undefined হবে তবে কোড ক্রাস করবেনা
+
+- এক্সট্রা হিসাবে এর সাথে আমরা Nullish qualescing operator ব্যবহার করে undefined বা null এরজন্য একটা ডিফল্ট ভ্যালু সেট করতে পারি ।
+
+```
+const permanentAddress =
+user?.address?.permanentAddress ?? "No permenant Address";
+console.log({ permanentAddress }); //"No permenant Address";
+```

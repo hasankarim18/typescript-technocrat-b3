@@ -10,4 +10,5 @@
 - [1-7 Spread and Rest Operator]()
 - [1-8 Destructuring in typescript]()
 - [1-9 Type alias]()
-- [1-9 Union And Interface Type]()
+- [1-10 Union And Intersection of Types]()
+- [1-11 Ternary, optional chaining & nullish coalescing operator]()

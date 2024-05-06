@@ -1,3 +1,3 @@
-let course: string = "Next Level";
+let course: string = "Next Level index.js";
 
 console.log(course);
