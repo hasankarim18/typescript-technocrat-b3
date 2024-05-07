@@ -8,6 +8,8 @@
 
 #### [1-11 Ternary, optional chaining & nullish coalescing operator](#ternary-optional-chaining-nullish-coalescing-operator)
 
+#### [1-12 Never Unknown Nullable Type](#never-unknown-nullable-type)
+
 ---
 
 ### 1.7
@@ -396,3 +398,9 @@ const permanentAddress =
 user?.address?.permanentAddress ?? "No permenant Address";
 console.log({ permanentAddress }); //"No permenant Address";
 ```
+
+---
+
+### 1-12
+
+### Never Unknown Nullable Type

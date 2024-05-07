@@ -12,3 +12,4 @@
 - [1-9 Type alias]()
 - [1-10 Union And Intersection of Types]()
 - [1-11 Ternary, optional chaining & nullish coalescing operator]()
+- [1-12 Never Unknown Nullable Type]()
