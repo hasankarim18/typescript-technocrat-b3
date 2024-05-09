@@ -130,6 +130,145 @@ type TCustomError = {
 
 ### `2-2` Interface Type vs Interface
 
+- সকল Primitive data type এর ক্ষেত্রে type alias ব্যবহার করতে পারব
+
+```
+type rollNumber = number
+```
+
+- object data এর ক্ষেত্রে type alias এবং interface দুই টাই ব্যাবহার করতে পারব
+
+```
+ // type alias
+  type TUser1 = {
+    name: string;
+    age: number;
+  };
+
+// interface
+  interface IUser {
+    name: string;
+    age: number;
+  }
+
+  const user1: IUser = {
+    name: "Abul",
+    age: 2,
+  };
+```
+
+- কিন্তু কোন primitive data এর ক্ষেত্রে inteface ব্যাবহার করা যাবেনা ।
+- কেননা interface class ও object এর মত আচরণ করে একে extend করা যায়
+
+- type এর extend করতে হলে intersection করতে হয়
+
+```
+// টাইপকে extend করার পদ্ধতি
+
+  type TUser1 = {
+    name: string;
+    age: number;
+  };
+  type role = string
+
+  // intersection of two type
+  type TUserWithRole1 = TUser1 & role;
+
+  const user2: TUserWithRole1 = {
+    name: "Dabul",
+    age: 33,
+    role: "user",
+  };
+
+```
+
+- Similarly, interfece কেও extend করা যায় extend keyword এর মাধ্যমে
+
+```
+  interface IUser {
+    name: string;
+    age: number;
+  }
+
+  interface IUserWithRole extends IUser {
+    role: string;
+  }
+
+  const userWithRole: IUserWithRole = {
+    name: "Abul",
+    age: 2,
+    role: "manager",
+  };
+```
+
+- চাইলে type কেও extend করে interface বানানো যায়
+
+```
+  type employee = {
+    name: string;
+    age: number;
+  };
+
+  interface EmployeeWithPosition extends employee {
+    position: string;
+  }
+
+  const employee1: EmployeeWithPosition = {
+    name: "Hamid",
+    age: 20,
+    position: "worker",
+  };
+
+```
+
+- কিভাবে Array কে interface এর মাধ্যমে declare করা যায়
+- js ---> object, array-> object , function -> object
+
+```
+  type Roll1 = number[];
+
+  const rollNumber1: Roll1 = [1, 2, 3];
+
+  //  সেম interface use করে
+
+    interface Roll2 {
+    [index: number]: number;
+  }
+
+  const rollNumber2: Roll2 = [1, 2, 3];
+
+```
+
+- এখানে বোঝানো হয়েছে array এর index এর type number ও value এর type number
+
+```interface Roll2 {
+    [index: number]: number;
+  }
+
+```
+
+- `Function ` কে interface এর মাধ্যমে লেখা
+
+```
+
+  type Add = (num1: number, num2: number) => number;
+
+  const add: Add = (num1, num2) => {
+    return num1 + num2;
+  };
+  // interface এর মাধ্যমে function declare করা
+  interface IAdd {
+    (num1: number, number2: number): number;
+  }
+
+  const add2: IAdd = (num1, num2) => num1 + num2;
+
+```
+
+- `Recmomendation`
+  - ‍Array ও Function এর জন্য type alias ব্যবহার করা
+  - Object এর জন্য চাইলে type alias অথবা interface ব্যাবহার করা
+
 ---
 
 ### `2-3` Introduction to generics
