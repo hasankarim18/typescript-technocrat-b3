@@ -273,6 +273,113 @@ type rollNumber = number
 
 ### `2-3` Introduction to generics
 
+- Generics শব্দের অর্থ হল generalized করে ফেলা ।
+- আমরা যদি কোন type কে generalized করতে পারি তাহলে তাকে generics বলে
+- generics এ আমরা dynamic ভাবে type তৈরি করতে পারি ও reuse করতে পারি
+
+- ধরুন, আমাদের একটি জেনেরিক ফাংশন থাকলে যেখানে আমরা একটি প্যারামিটার হিসাবে একটি ডাটা টাইপ নেব। এই ডাটা টাইপটি যেকোনো ধরনের হতে পারে। ফাংশনটি এই ডাটা টাইপের উপর ভিত্তি করে কাজ করবে। যেমন, আমরা একটি জেনেরিক ফাংশন তৈরি করতে পারি যা দুটি নাম্বার বা স্ট্রিং যোগ করতে পারে।
+
+```
+function add<T>(x: T, y: T): T {
+  return x + y;
+}
+
+```
+
+- এখানে T হল জেনেরিক ডাটা টাইপ। যখন আমরা এই ফাংশনটি কল করব, তখন টাইপ ইনফারেন্সের মাধ্যমে টাইপস্ক্রিপ্ট স্বয়ংক্রিয়ভাবে ডাটা টাইপ নির্ধারণ করবে।
+
+- এছাড়াও, আমরা জেনেরিক ক্লাস বা ইন্টারফেস ব্যবহার করে একই ধরনের ফাংশনালিটি প্রদান করতে পারি যা আমরা নির্দিষ্ট ডাটা টাইপ বা অবজেক্টের উপর নির্ভর করব।
+
+- এই মত টাইপ প্যারামিটার ব্যবহার করে, আমরা কোডটিকে জেনেরিক করে সাধারণভাবে প্যারামিটারের টাইপ নির্ধারণ না করেই গুনগুণ কাজ করতে পারি।
+
+-
+
+```
+
+  type GenericArray<T> = Array<T>;
+
+  // সাধারণ নিয়ম
+  const rollNumbers: number[] = [3, 4, 5, 5];
+  // Array method দিয়ে
+  const rollNumbers2: Array<number> = [3, 4, 5, 5];
+  // GenericArray type দিয়ে
+  const rollNumbers3: GenericArray<number> = [3, 4, 5, 5];
+
+  const students: string[] = ["abul", "dabul", "kabul", "sabul"];
+  const students2: Array<string> = ["abul", "dabul", "kabul", "sabul"];
+  const students3: GenericArray<string> = ["abul", "dabul", "kabul", "sabul"];
+
+  const boolArray: boolean[] = [true, false, true, true, false];
+  const boolArray2: Array<boolean> = [true, false, true, true, false];
+  const boolArray3: GenericArray<boolean> = [true, false, true, true, false];
+
+  /*
+   GenericArray type কে আমরা Array of object হিসাবে ব্যাবহার করতে পারি ।
+  */
+
+  const user: GenericArray<{
+    name: string;
+    age: number;
+  }> = [
+    {
+      name: "Abul",
+      age: 100,
+    },
+    {
+      name: "Dabul",
+      age: 200,
+    },
+  ];
+
+```
+
+- উপরের `type GenericArray<T> = Array<T>` একটি Generic type
+- এটা ব্যাবহার করে আমরা বিভিন্ন বিভন্ন ভাবে array তৈরি করতে পারি
+
+- Generic Tuple
+
+```
+
+  // প্রথমটা number, দ্বিতীয়টা object
+  const userWithId: GenericTuple<
+    number,
+    {
+      name: string;
+      email: string;
+    }
+  > = [1234, { name: "abul", email: "abul@mail.com" }];
+
+  // another way
+  // type declare করেও করতে পারি
+   type Person = {
+    name: string;
+    email: string;
+  };
+  const userWithId2: GenericTuple<number, Person> = [
+    1234,
+    { name: "abul", email: "abul@mail.com" },
+  ];
+
+```
+
+- Interface দিয়েও সম্ভব
+
+```
+interface IPerson {
+    name: string;
+    email: string;
+  }
+
+  const userWithId3: GenericTuple<number, IPerson> = [
+    20,
+    {
+      name: "Abul",
+      email: "abul@mail.com",
+    },
+  ];
+
+```
+
 ---
 
 ### `2-4` Generic with interface
