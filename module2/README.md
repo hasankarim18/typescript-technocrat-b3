@@ -384,9 +384,396 @@ interface IPerson {
 
 ### `2-4` Generic with interface
 
+- We can create generics with interface
+
+- ### Example One
+
+```
+  interface Developer<T> {
+    name: string;
+    computer: {
+      brand: string;
+      model: string;
+      releaseYear: number;
+    };
+    smartWatch: T;
+  }
+
+    const poorDeveloper: Developer<boolean> = {
+    name: "poor man",
+    computer: {
+      brand: "Asus",
+      model: "Normal",
+      releaseYear: 2020,
+    },
+    smartWatch: false,
+  };
+
+```
+
+- আমরা একটা interface লিখলাম `Developer<T>` এখন এটার মাধ্যমে বিভিন্ন রকম variable আমরা তৈরি করতে পারব ।
+- `const poorDeveloper` এ boolean দিয়েছি ।
+
+#### Example 2
+
+- আবার একই Generic interface ব্যাবহার করে আমরা `smartWatch` এ object বলিখতে পারি ।
+
+```
+    interface Developer<T> {
+    name: string;
+    computer: {
+      brand: string;
+      model: string;
+      releaseYear: number;
+    };
+    smartWatch: T;
+  }
+
+  interface SmartWatch {
+    compayName: string;
+    modelYear: number;
+    price: number;
+  }
+
+    const richDeveloper: Developer<SmartWatch> = {
+    name: "Rich man",
+    computer: {
+      brand: "Asus",
+      model: "Gaming",
+      releaseYear: 2023,
+    },
+    smartWatch: {
+      compayName: "Apple",
+      modelYear: 2024,
+      price: 12000,
+    },
+  };
+
+```
+
+### Example 3
+
+```
+
+    interface Developer<T> {
+    name: string;
+    computer: {
+      brand: string;
+      model: string;
+      releaseYear: number;
+    };
+    smartWatch: T;
+  }
+
+  interface SmartWatch {
+    compayName: string;
+    modelYear: number;
+    price: number;
+  }
+
+  interface UltraSmartWatch extends SmartWatch {
+    heartTrack: boolean;
+    sleepTrack: boolean;
+  }
+
+  const urtraRichDeveloper: Developer<UltraSmartWatch> = {
+    name: "Cool Guy",
+    computer: {
+      brand: "Apple",
+      model: "unknown",
+      releaseYear: 2023,
+    },
+    smartWatch: {
+      compayName: "Apple",
+      modelYear: 2024,
+      price: 120000,
+      sleepTrack: true,
+      heartTrack: true,
+    },
+  };
+
+```
+
+### Example 4 with `Default` Value of type/interface
+
+```
+ // default vaue of type
+ // type দুইটা dynamic value নেয়া হয়েছে এবং bike optional হয়েছে
+ /*
+  Second value `u` এর জন্য ডিফল্ট value null দেয়া হয়েছে কারন bike এর value optional, এটা থাকতেও পারে নাও পারে, না থাকলে  default value null হবে এবং  error দেখাবে না।
+  */
+ interface Developer<T, U = null> {
+   name: string;
+   computer: {
+     brand: string;
+     model: string;
+     releaseYear: number;
+   };
+   smartWatch: T;
+   bike?: U;
+ }
+
+  // বাইক এর জন্য টাইপ
+ type Bike = {
+   name: string;
+   compay: string;
+   cc: number;
+ };
+
+  interface SmartWatch {
+    compayName: string;
+    modelYear: number;
+    price: number;
+  }
+  // smartWatch কে extend করে UltraSmartWatch
+  interface UltraSmartWatch extends SmartWatch {
+    heartTrack: boolean;
+    sleepTrack: boolean;
+  }
+
+  // type হিসাবে UltraSmartWatch ও Bike ব্যাবহার করা হয়েছে ।
+ const coolDeveloper: Developer<UltraSmartWatch, Bike> = {
+   name: "Cool Guy",
+   computer: {
+     brand: "Apple",
+     model: "unknown",
+     releaseYear: 2023,
+   },
+   smartWatch: {
+     compayName: "Apple",
+     modelYear: 2024,
+     price: 120000,
+     sleepTrack: true,
+     heartTrack: true,
+   },
+   bike: {
+     name: "R15",
+     compay: "Hero",
+     cc: 165,
+   },
+ };
+
+```
+
+### Example 4
+
+```
+
+  // extending Generic Interfaces
+  interface Developer<T> {
+    name: string;
+    computer: {
+      brand: string;
+      model: string;
+      releaseYear: number;
+    };
+    smartWatch: T;
+  }
+
+  interface DeveloperWithBike<T, U> extends Developer<T> {
+    bike?: U;
+  }
+
+```
+
+- উপরের Developer interfce কে আমরা extend করতে পারি এবং আর একটা dynamic type যোগ করতে পারি ।
+
 ---
 
 ### `2-5` Function with generics
+
+- সাধারণ function আমরা যেভাবে লিখি
+
+```
+  const createArray = (param: string): string[] => {
+    return [param];
+  };
+   const result1 = createArray("Bangladesh");
+  console.log(result1);
+```
+
+-
+- - উপরের function এ parameter হিসাবে string গ্রহণ করবে এবং array of string return করবে ।
+
+- এখন এই function টিকে আমরা generic function বানাতে পারি
+  - এখন function টি parameter হিসাবে dynamic value accept করবে এবং array of dynamic type return করবে
+
+```
+  const createArrayWithGeneric = <T>(param: T): T[] => {
+    return [param];
+  };
+```
+
+- string type input এর জন্য array of string return করতেছে
+
+```
+  //
+  const resGeneric2 = createArrayWithGeneric<string>("Dhaka");
+  console.log(resGeneric2); // ['Dhaka']
+```
+
+- param হিসাবে object দেয়া হয়েছে তাই return হিসাবে [{object}] return করবে
+
+```
+  type User = {
+    name: string;
+    age: number;
+  };
+  // genric function
+    const createArrayWithGeneric = <T>(param: T): T[] => {
+    return [param];
+  };
+
+  // use of generic function
+  const resGeneric = createArrayWithGeneric<User>({ name: "Abul", age: 20 });
+
+  console.log(resGeneric);
+
+```
+
+- tuple with generic function
+
+```
+  const createArrayWithTuple = <T, Q>(param1: T, param2: Q): [T, Q] => {
+    return [param1, param2];
+  };
+
+  const [a, b] = createArrayWithTuple<string, string>("dhaka", "khulna");
+  console.log({ a }, { b });
+
+  // আমরা object of পাঠাতে পারি এবং
+  type User = {
+    id: number;
+    name: string;
+  };
+  type Country = {
+    country: string;
+    capital: string;
+  };
+  const user1: User = {
+    id: 123,
+    name: "karim",
+  };
+  const countryOfUser1: Country = {
+    country: "Bangladesh",
+    capital: "Dhaka",
+  };
+
+  const user1FullInfo = createArrayWithTuple<User, Country>(
+    user1,
+    countryOfUser1
+  );
+
+  console.log(user1FullInfo);
+  /*
+  [
+    { id: 123, name: 'karim' },
+    { country: 'Bangladesh', capital: 'Dhaka' }
+  ]
+  */
+  console.log({ user1FullInfo });
+  /*
+  user1FullInfo: [
+    { id: 123, name: 'karim' },
+    { country: 'Bangladesh', capital: 'Dhaka' }
+  ]
+
+  */
+```
+
+```
+{
+  // add course to student
+  type Student = {
+    name: string;
+    id: number;
+    phone: boolean;
+    laptop?: boolean;
+    email?: string;
+  };
+
+  const student1: Student = {
+    name: "Dabul",
+    id: 123,
+    phone: false,
+    laptop: true,
+    email: "babul@mail.com",
+  };
+
+  const addCourseToStudent = <T>(student: T): T & { course: string } => {
+    const course = "Next Level Web Development";
+    return {
+      ...student,
+      course,
+    };
+  };
+
+  const student1WithCourse = addCourseToStudent<Student>(student1);
+
+  console.log({ student1WithCourse });
+}
+
+```
+
+```
+{
+  type Student = {
+    name: string;
+    id: number;
+    phone: boolean;
+    laptop?: boolean;
+    email?: string;
+  };
+
+  const student1: Student = {
+    name: "Dabul",
+    id: 123,
+    phone: false,
+    laptop: true,
+    email: "babul@mail.com",
+  };
+  //
+  const addAdditionalCourse = <T, Q>(student: T, courses: Q) => {
+    const defaultCourse = "Next Level";
+
+    if (typeof courses === "string") {
+      return {
+        ...student,
+        coursesList: [courses, defaultCourse],
+      };
+    } else if (
+      Array.isArray(courses) &&
+      courses.every((item) => typeof item === "string")
+    ) {
+      return {
+        ...student,
+        coursesList: [...courses, defaultCourse],
+      };
+    } else {
+      return "Courses must be string or array of string";
+    }
+  };
+
+  const coursesList: string[] = ["physics", "chemistry"];
+
+  const user1 = addAdditionalCourse<Student, string[]>(student1, coursesList);
+
+  interface Student2 {
+    name: string;
+    age: number;
+  }
+
+  const student2 = {
+    name: "Student 2",
+    age: 100,
+  };
+
+  const user2 = addAdditionalCourse<Student2, string>(student2, "biology");
+  console.log(user1);
+  console.log(user2);
+}
+
+```
 
 ---
 
