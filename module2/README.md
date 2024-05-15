@@ -944,11 +944,193 @@ const getPropertyValue = <T, Q extends keyof T>(obj: T, key: Q) => {
 - - এখন Q এর type হিসাবে T object এর key গুলো expect করা হচ্ছে ।
 - - তাহলে return হিসাবে ওই object এর key এর value পাওয়া যাবে ।
 
-```
-
 ---
 
 ### `2-8` Asynchronous typescript
+
+- Step One Normal Asnychronour javascript
+- - basic promise
+- - js promise either resolved or rejected
+- - এখানে return unknown দেখাচ্ছে এটাকে আমরা solve করব নিচে
+
+```
+  const createPromise = () => {
+    return new Promise((resolve, reject) => {
+      const data: string = "something";
+      if (data) {
+        resolve(data);
+      } else {
+        reject("Failed to load data");
+      }
+    });
+  };
+
+  // calling the promise
+  const showData = async () => {
+    const data = await createPromise();
+    console.log(data);
+  };
+
+  showData();
+```
+
+- ‍Step Two
+- - ‍solving promise type script
+- - যেহেতু আমরা string return করতেছি তাই promise থেকে
+- - createPromise ---> Promise<string> return করতেছে
+
+```
+  const createPromise = (): Promise<string> => {
+    return new Promise<string>((resolve, reject) => {
+      const data: string = "something ts";
+      if (data) {
+        resolve(data);
+      } else {
+        reject("Failed to load data");
+      }
+    });
+  };
+
+  const showData = async (): Promise<string> => {
+    const data: string = await createPromise();
+    console.log(data);
+    return data;
+  };
+
+  showData();
+```
+
+- - এখানে Promise, string return করবে
+
+- - showData যদি return না করি তাহলে promise<void> হবে আর আমরা যদি return data করি তাহলে promise<string> দেখাবে
+
+- ‍Step Three
+  - same বিষয়টা আমরা boolean এর জন্যও করতে পারি
+  - আমরা Promise কে বলে দিছি তুমি Promise<boolean> return কর
+
+```
+  const createPromise = (): Promise<boolean> => {
+      return new Promise<boolean>((resolve, reject) => {
+      const data: boolean = true;
+     if (data) {
+      resolve(data);
+    }  else {
+      reject("Failed to load data");
+    }
+    });
+  };
+
+```
+
+- Step Four
+
+```
+
+  // ‍Step Four
+  // যদি আমরা object কে পাঠাই
+
+  type SomeThing = {
+    someThing: string;
+  };
+  const createPromise = (): Promise<SomeThing> => {
+    return new Promise<SomeThing>((resolve, reject) => {
+      const data: SomeThing = { someThing: "some-thing" };
+      if (data) {
+        return resolve(data);
+      } else {
+        return reject("Failed to load data");
+      }
+    });
+  };
+
+  // উপরের function return করবে Promise<object> type এর  data
+
+  // নিচের function return করবে Promise<object> type এর  data
+
+  const showData = async (): Promise<SomeThing> => {
+    const data: SomeThing = await createPromise();
+    console.log(data);
+    return data;
+  };
+
+  showData(); //
+```
+
+- Step five
+  - Data fetch with asynchronous typescript
+
+```
+
+  const url = "https://jsonplaceholder.typicode.com/todos";
+
+  const getTodo = async () => {
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log(data)
+  };
+  getTodo(); // Promise(void) return করবে কারন কিছুই return করা হয়নাই
+```
+
+- by default getTodo1() Promise<any> return করবে
+
+```
+  const getTodo1 = async ():Promise<any> => {
+    const res = await fetch(url);
+    const data = await res.json();
+    return data;
+  };
+  getTodo1();
+```
+
+- যেহেতু api data object, array, array of object, nesting object অনেক রকম nesting হিসাবে থাকতে পারে তাই by default -- Promise<any> return করে থাকে
+
+- এখানে আমরা দেখতেছি আমাদের পাঠানো data ছোট data এবং array of object তাই আমরা specific ভাবে return object type তৈরি কেরতে পারি
+
+```
+  type Todo = {
+    id: number;
+    userId: number;
+    title: string;
+    completed: boolean;
+  };
+
+  // এখানে
+  const getTodo2 = async (): Promise<Todo[]> => {
+    const res = await fetch(url);
+    const data: Todo[] = await res.json();
+    console.log(data);
+    return data;
+  };
+  getTodo2();
+```
+
+- যেহেতু getTodo2(), array of object return করে তাই Todo[] দ্বারা Todo type এর array of object বুঝাচ্ছে । [Todo, Todo]
+
+```
+/*
+[
+  {
+    "userId": 1,
+    "id": 1,
+    "title": "delectus aut autem",
+    "completed": false
+  },
+  {
+    "userId": 1,
+    "id": 2,
+    "title": "quis ut nam facilis et officia qui",
+    "completed": false
+  },
+  {
+    "userId": 1,
+    "id": 3,
+    "title": "fugiat veniam minus",
+    "completed": false
+  },
+]
+*/
+
+```
 
 ---
 
@@ -961,4 +1143,19 @@ const getPropertyValue = <T, Q extends keyof T>(obj: T, key: Q) => {
 ---
 
 ### `2-11` Utility types
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+
 ```
