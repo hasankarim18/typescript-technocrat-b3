@@ -1136,26 +1136,331 @@ const getPropertyValue = <T, Q extends keyof T>(obj: T, key: Q) => {
 
 ### `2-9` Conditional types
 
+```
+{
+  console.log("conditional types");
+  // conditional type
+  // টাইপের মানটা যদি অন্য একটি condition এর উপর নির্ভর করে তাহলে তাকে conditional type বলে।
+
+  type a1 = null;
+  type b1 = undefined;
+
+  type x = a1 extends null ? true : false; // conditional type
+  // - যদি a1 null কে extends করতে পারে তাহলে তা  true  হবে
+  // - আর যদি ‍a1 কে number বা অন্য type করে দেয়া হয় তহলে তা false হবে
+
+  // nestend conditional type
+
+  //
+}
+
+// null, null কে extend করতে পারে
+// undefined, undefined কে extend করতে পারে
+// কিন্তু
+// ‍string, null কে extend করতে পারেনা
+
+{
+  type a1 = number;
+  type b1 = undefined;
+
+  type y = a1 extends null ? true : b1 extends undefined ? undefined : any;
+
+  /*
+     - `y` এর type কি হবে ?
+     - - ‍a1 কি null কে extends --> না করে নাই //
+     - -  b1 কি undefined কে extends করেছে --> করেছে
+     - - তাহলে y এর type হবে undefined
+  */
+
+  type Sheikh = {
+    bike: string;
+    car: string;
+    ship: string;
+    plane: string;
+  };
+
+  // key of operator Sheikh
+
+  // car আছে কিনা | bike আছে কিনা | ship আছে কিনা | Tracktor আছে কিনা
+  type CheckVehicle<T> = T extends keyof Sheikh ? true : false;
+
+  type HasTracktor = CheckVehicle<"ship">; // true
+  type HasPlane = CheckVehicle<"car">; // false
+
+  //
+}
+
+```
+
 ---
 
 ### `2-10` Mapped types
+
+{
+// maped types
+console.log("maped typed");
+const arrOfNumbers: number[] = [1, 2, 3, 4];
+// const arrOfStrings: string[] = ['1', '2', '3', '4'];
+const arrOfStrings: string[] = arrOfNumbers.map((number) =>
+number.toString()
+);
+
+console.log(arrOfStrings);
+
+type AreaNumber = {
+height: number;
+width: number;
+};
+
+// একটা type এর key গুলো ব্যাবহার করে অন্য এটা type তৈরি করে ফেলা
+
+// একটা simple type কে define করার জন্য type কে আবার define করতে হচ্ছে
+
+type AreaString = {
+height: string;
+width: string;
+};
+
+// এখন dynamically আমরা এটা করতে চাচ্ছি mapped type এর মাধ্যমে ।
+type ArrayStringMappedHardCode = {
+[key in "height" | "width"]: string;
+};
+
+// or more proficient way of writting using keyof operator
+
+type ArrayStringMapped = {
+[key in keyof AreaNumber]: string;
+};
+
+// এই AreaString ও ArrayStringMapped একই type। এখানে ArrayStringMapped type কে AreaNumber ব্যাবহার করে করা হয়েছে ।
+}
+
+```
+// genric
+  type AreaNumber = {
+  height: number;
+  width: number;
+};
+
+
+type Area<T> = {
+  [key in keyof T]: T[key];
+};
+
+type Height = AreaNumber["height"]; // number
+// আনেকটা object destructuring এর মত কাজ করে --> `lookup`
+
+const area1: Area<{ height: string; width: number }> = {
+  height: "100",
+  width: 50,
+};
+
+
+```
+
+```
+// generic mapped of
+// T => {height:string:width:number}
+// key => T["width"] or T["height"]
+type Area<T> = {
+[key in keyof T]: T[key]
+}
+
+```
+
+- area1 এর জন্য
+
+- এখানে type এর ভিতর looping চলে তাই
+- তাই একবার height দিয়ে looping পাব --> সেক্ষেত্রে T[key] হবে ‍ string
+
+- তাই একবার width দিয়ে looping পাব --> সেক্ষেত্রে T[key] হবে ‍ number
+
+- T[key] lookup করে type বের করে নিয়ে আসবে
+
+```
+
+```
 
 ---
 
 ### `2-11` Utility types
 
+## `Utiligy types`
+
+### `Pick` Utility type
+
+- এই type এর মাধ্যমে একটি type থেকে property pick করে নতুন type তৈরি করা যায়
+
 ```
+type Person = {
+  name: string;
+  age: number;
+  email?: string;
+  contactNo: string;
+};
+
+type Name = Pick<Person, "name" >
+
+type NameAge = Pick<Person, "name" | "age">;
+```
+
+- প্রথমে Name নামের একটি type বানানো হয়েছে
+
+```
+type Name = Pick<Person, "name">;
+```
+
+- type Name = Pick<কোন type থেকে pick করবা , কোন parameter pick করবা >
+- তাহলে Name type টা হবে
+
+```
+type Name = {
+name:String;
+}
+```
+
+- অর্থাৎ নতুন একটা object type তৈরি হল ।
+- যদি আরো type pick করতে চাই তাহলে | চিহ্ন দিয়ে লিখতে হবে (Union === |)
+
+```
+type NameAge = Pick<Person, "name" | "age">;
+```
+
+- যা দেখতে হবে
+
+```
+type NameAge = {
+  name:string;
+  age:number
+}
+```
+
+### `Omit type`
+
+- Pick এর উল্টা বাদ দেয়া
+
+```
+  type Person = {
+    name: string;
+    age: number;
+    email?: string;
+    contactNo: string;
+  };
+  type ContactInfo = Omit<Person, "name" | "age">;
+  // নতুন একটা  type গঠন হবে এবং  "name" "age" বাদ যাবে
+
+  type ContactInfo = {
+    email?: string;
+    contactNo: string;
+  }
 
 ```
 
+### `Required type`
+
+- এমন যদি চাই type সকল type required হয়ে যাবে এবং কোন optional type থাকবেনা তখন Required type ব্যাবহার করতে হবে ।
+
+```
+  type Person = {
+    name: string;
+    age: number;
+    email?: string;
+    contactNo: string;
+  };
+
+  type PersonRequired = Required<Person>;
+  // নিচের মত দেখতে হবে
+  /*
+  type PersonRequired = {
+    name: string;
+    age: number;
+    email: string;
+    contactNo: string;
+}
+*/
+```
+
+### `Partial type`
+
+- এমন যদি চাই type সকল type optional / partial হয়ে যাবে এবং কোন required type থাকবেনা তখন Partial type ব্যাবহার করতে হবে ।
+
+```
+  type Person = {
+    name: string;
+    age: number;
+    email?: string;
+    contactNo: string;
+  };
+
+  type PersonRequired = Partial<Person>;
+  // দেখতে নিচের মত
+  /*
+    type PersonPartial = {
+        name?: string | undefined;
+        age?: number | undefined;
+        email?: string;
+        contactNo?: string | undefined;
+
+      }
+*/
+```
+
+### `Readonly`
+
+- কোন একটা object / type এর ভ্যালু পরিবর্তন করতে পারবেনা শধু পড়তে পারবে তখস Readonly ব্যাবহার হবে
+
+```
+  type Person = {
+  name: string;
+  age: number;
+  email?: string;
+  contactNo: string;
+  };
+
+  type PersonReadOnly = Readonly<Person>;
+
+  const person1: PersonReadOnly = {
+    name: "Abul",
+    age: 200,
+    email: "abul@mail.com",
+    contactNo: "123456",
+  };
+
+  person1.name = "Mr Dabul"; // error show করবে
+  // Readonly করে নেয়া হয়েছে এর কোন কিছু change করা যাবেনা
+
+  console.log(person1);
 ```
 
 ```
+// Record type
+  // type MyObj = {
+  // a: string;
+  // b: string;
+// };
 
-```
+//কিন্তু আমরা চাই dynamically type add করতে
 
-```
+// genric ব্যাবহার করা লাগলনা
+// type MyObj = Recode<key এর type, value এর type>
+// উপরের MyObj কে লিখতে পারি
+type MyObj = Record<string, string>;
 
-```
+const obj1: MyObj = {
+a: "aaa",
+b: "bbb",
+c: "ccc", // error show করবে
+};
 
+const obj2: MyObj = {
+a: "aaa",
+b: "bbb",
+c: 6, // error দেখাবে কারন আমরা Record এর দ্বিতীয় parameter string দিছি
+};
+
+// কখন Record use করি
+const emptyObj: Record<string, unknown> = {};
+
+// এটার মানে হল একটা object থাকবে যার value পরে ‍add হবে
+// এর key অবশ্যই string হবে এবং value unknown
 ```
