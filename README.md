@@ -37,3 +37,5 @@
 `2-10:` [Mapped types]()
 
 `2-11:` [Utility types]()
+
+- ts-node-dev --respawn --transpile-only

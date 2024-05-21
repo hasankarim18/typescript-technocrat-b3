@@ -1,4 +1,6 @@
-`3-1:` [Introduction to OOP](#3-1-introduction-to-oop)
+`3-0:` [Introduction to OOP](#3-0-introduction-to-oop)
+
+`3-1:` [Class and object](#3-1-class-and-object)
 
 `3-2:` [Inheritance in OOP](#3-2-inheritance-in-oop)
 
@@ -20,7 +22,7 @@
 
 ---
 
-## 3-1 Introduction to oop
+## 3-0 Introduction to OOP
 
 - A programming paradigm that organizes and models software.
 - Software কে organise করতে পারি এবং বিভিন্ন ছোট ছোট module এ ভাগ করে ফেলতে পারি ।
@@ -62,6 +64,135 @@
 2. `Polymorphism`
 3. `Abstruction`
 4. `Encapsulation`
+
+## 3-1 Class and object
+
+- Javascript এর মত clss declare করব তবে property type গুলো বলে দিতে হবে
+- Class এর কাজ হল Object তৈরি করা
+- Object তৈরির blueprint হল class
+- Class লিখার সময় অবশ্যই constructor দিয়ে value গুলো দিতে হবে
+
+```
+   class Animal {
+        animalName: string;
+        animalSpecies: string;
+        animalSound: string;
+    constructor(name: string, species: string, sound: string) {
+      this.animalName = name;
+      this.animalSpecies = species;
+      this.animalSound = sound;
+    }
+
+    makeSound() {
+      console.log(`the ${this.animalName} making sound: ${this.animalSound}`);
+    }
+
+  }
+
+```
+
+- Animal class এ `animalName: string`, `animalSpecies: string`,
+  `animalSound: string` হল variable
+
+- constructor function লাগবে হল এমন একটা function যা parameter receive করতে ও class এর variable সেই parameter set করতে কাজে লাগে ।
+- function এ যেমন parameter pass করা যায় তেমনি constructor function parameter accept করে ।
+
+- এখানে `this` দ্বারা `Class Animal`কে বুঝাচ্ছে এবং এর সাথে `this.animalName` দ্বারা `Animal` class এ `animalName` নামের `variable` কে নির্দেশ করে যা value হিসাবে incomming parameter থেকে যে parameter set করা হয় সেটাই তার ভ্যালু হয় ।
+
+- Class এ data save করলে তাকে attributes বলে
+- Class এ function save করলে তাকে মেথড `method` বলে
+- function হিসাবে `normal function` ব্যবহার কেরতে হয়, নাহলে `this` কাজ করবেনা এবং class এর কোন value access করা যাবেনা । কেনান আমরা জানি arrow function এ `this` কাজ করোনা
+
+- Class থেকে object তৈরি করতে `new` keyword ব্যাবহার করতে হয়
+
+```
+ const dog = new Animal("German Shephard", "dog", "bark");
+ const cat = new Animal("Persian", "cat", "Meao");
+```
+
+```
+// dog একটা Animal class এর instance অর্থাৎ object
+  // যা দেখতে নিচের object এর মত
+  /*
+    const dog = {
+      name:"German Shephard",
+      species:"dog",
+      sound:"bark"
+
+    }
+  */
+```
+
+- Animal, class থেকে দুইটি object `dog and cat` তৈরি করা হয়েছে ।
+- Class থেকে তৈরি করা object কে instance বলে
+- `Animal` থেকে তৈরি object `dog` একটা instance `cat` আর একটা instance
+
+### public keyword
+
+- Class এর default property গুলো publicly access করা যায় তাই এদের সামনে আমরা `public keyword` লিখতে পারি ।
+
+```
+  class Animal {
+    public animalName: string;
+    public animalSpecies: string;
+    public animalSound: string;
+
+    constructor(name: string, species: string, sound: string) {
+      this.animalName = name;
+      this.animalSpecies = species;
+      this.animalSound = sound;
+    }
+
+    makeSound() {
+      console.log(`the ${this.animalName} making sound: ${this.animalSound}`);
+      return;
+    }
+  }
+
+  const dog = new Animal("German Shephard", "dog", "bark");
+
+  const cat = new Animal("Persian", "cat", "Meaw");
+
+  // cat.makeSound();
+  //  dog.makeSound();
+  console.log(dog.makeSound());
+
+
+```
+
+### parameter properties
+
+- constructor এর ভিতরে public লিখে দিলে public type define কিরে দিবে সাথে initialize ও করে দিবে
+- তখন constructor এর ভিতরে কিছু set করতে হবেনা
+- একে parameter property বলে
+
+```
+
+  class Animal {
+    constructor(
+      public name: string,
+      public species: string,
+      public sound: string
+    ) {}
+
+    makeSound() {
+      console.log(`the ${this.name} making sound: ${this.sound}`);
+      return;
+    }
+  }
+
+  const dog = new Animal("German Shephard", "dog", "bark");
+
+  const cat = new Animal("Persian", "cat", "Meaw");
+
+  // cat.makeSound();
+  //  dog.makeSound();
+  console.log(dog.makeSound());
+
+
+```
+
+- এতে কোন property initialize করতে হয়না আবার constructor এর ভিতর ‍set ও করতে হয়না
 
 ## 3-2 Inheritance in oop
 
